@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --modal-bg: theme("colors.zinc.800");
+  --modal-bg: #27272ae0;
 }
 
 body {
