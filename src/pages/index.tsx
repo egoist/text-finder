@@ -1,6 +1,6 @@
 import Tippy from "@tippyjs/react"
 import { NextSeo } from "next-seo"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Page } from "tesseract.js"
 import { Footer } from "../components/Footer"
 import { TablerBrandGithub, TablerSettings } from "../components/icons"
@@ -9,6 +9,7 @@ import { extractText } from "../lib/extract-text"
 
 export default function Home() {
   const [data, setData] = useState<Page | null>(null)
+  const [file, setFile] = useState<File | null>(null)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "error"
@@ -16,47 +17,58 @@ export default function Home() {
   const fileInputEl = useRef<HTMLInputElement | null>(null)
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
 
-  const handleFileInputChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  useEffect(() => {
+    if (imageUrl) {
+      URL.revokeObjectURL(imageUrl)
+    }
+    if (file) {
+      setImageUrl(URL.createObjectURL(file))
+    } else {
+      setImageUrl(null)
+    }
+  }, [file])
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (files) {
-      await processFiles([...files])
+      setFile(files[0])
     }
   }
 
-  const processFiles = async (files: File[]) => {
-    for (const file of files) {
-      if (file.type.startsWith("image/")) {
-        if (imageUrl) {
-          URL.revokeObjectURL(imageUrl)
-        }
-        setImageUrl(URL.createObjectURL(file))
+  const processFile = async () => {
+    if (!file) return
+    if (file.type.startsWith("image/")) {
+      if (imageUrl) {
+        URL.revokeObjectURL(imageUrl)
+      }
+      setImageUrl(URL.createObjectURL(file))
 
-        setStatus("loading")
-        try {
-          const data = await extractText(file)
-          console.log(data)
-          setData(data)
-          setStatus("success")
-        } catch (error) {
-          console.error(error)
-          setStatus("error")
-        }
-        return
+      setStatus("loading")
+      try {
+        const data = await extractText(file)
+        console.log(data)
+        setData(data)
+        setStatus("success")
+      } catch (error) {
+        console.error(error)
+        setStatus("error")
       }
     }
   }
 
   useEffect(() => {
+    processFile()
+  }, [file])
+
+  useEffect(() => {
     const handleDragOver = (e: DragEvent) => {
       e.preventDefault()
     }
-    const handleDrop = async (e: DragEvent) => {
+    const handleDrop = (e: DragEvent) => {
       e.preventDefault()
 
       if (!e.dataTransfer) return
-      await processFiles([...e.dataTransfer.files])
+      setFile(e.dataTransfer.files[0])
     }
 
     document.addEventListener("dragover", handleDragOver)
@@ -155,7 +167,10 @@ export default function Home() {
       <Footer />
       <SettingsModal
         isOpen={isSettingsModalOpen}
-        closeModal={() => setIsSettingsModalOpen(false)}
+        closeModal={() => {
+          setIsSettingsModalOpen(false)
+          processFile()
+        }}
       />
     </>
   )
