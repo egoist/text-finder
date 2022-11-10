@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --modal-bg: theme("colors.zinc.800");
+}
+
+body {
+  @apply bg-zinc-900 text-zinc-200 antialiased;
+}
+
+*,
+*:before,
+*:after {
+  @apply border-zinc-600;
+}
+
+.react-select__control {
+  @apply bg-transparent border-zinc-600 rounded-xl !important;
+}
+
+.react-select__menu {
+  background-color: var(--modal-bg) !important;
+  @apply rounded-xl shadow-xl border border-zinc-600 overflow-hidden !important;
+}
+
+.react-select__option--is-focused {
+  @apply bg-zinc-600 !important;
+}
+
+.react-select__indicator-separator {
+  @apply bg-zinc-600 !important;
+}
+
+.react-select__input {
+  @apply text-zinc-200 !important;
+}
+
+.react-select__multi-value {
+  @apply rounded-xl pl-1 overflow-hidden !important;
+}
