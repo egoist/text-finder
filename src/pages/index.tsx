@@ -128,7 +128,10 @@ export default function Home() {
                   d="M216 42H40a14 14 0 0 0-14 14v144a14 14 0 0 0 14 14h176a14 14 0 0 0 14-14V56a14 14 0 0 0-14-14ZM40 54h176a2 2 0 0 1 2 2v113.5l-32.1-32.1a14.1 14.1 0 0 0-19.8 0l-20.7 20.7a1.9 1.9 0 0 1-2.8 0l-44.7-44.7a14.1 14.1 0 0 0-19.8 0L38 153.5V56a2 2 0 0 1 2-2Zm176 148H40a2 2 0 0 1-2-2v-29.5l48.6-48.6a1.9 1.9 0 0 1 2.8 0l44.7 44.7a14.1 14.1 0 0 0 19.8 0l20.7-20.7a1.9 1.9 0 0 1 2.8 0l40.6 40.6V200a2 2 0 0 1-2 2Zm-67.1-94.9a9.9 9.9 0 0 1-2.9-7.1a10 10 0 0 1 20 0a10 10 0 0 1-10 10a9.9 9.9 0 0 1-7.1-2.9Z"
                 ></path>
               </svg>
-              <span className="mt-5 block">Drop an image anywhere</span>
+              <div className="mt-5">
+                Image-to-text (OCR) app that works offline
+              </div>
+              <div className="mt-5">Drop an image anywhere</div>
             </label>
           )}
           {imageUrl && (
