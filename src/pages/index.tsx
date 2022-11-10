@@ -2,6 +2,7 @@ import Tippy from "@tippyjs/react"
 import { NextSeo } from "next-seo"
 import React, { useEffect, useRef, useState } from "react"
 import { Page } from "tesseract.js"
+import { Footer } from "../components/Footer"
 import { TablerBrandGithub, TablerSettings } from "../components/icons"
 import { SettingsModal } from "../components/SettingsModal"
 import { extractText } from "../lib/extract-text"
@@ -148,6 +149,7 @@ export default function Home() {
           )}
         </div>
       </div>
+      <Footer />
       <SettingsModal
         isOpen={isSettingsModalOpen}
         closeModal={() => setIsSettingsModalOpen(false)}
